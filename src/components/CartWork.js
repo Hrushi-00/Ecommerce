@@ -40,7 +40,7 @@ const CartWork = (props) => {
   };
 
   return (
-    <div className="project-card">
+    <div className="main-project-card">
       <div className="product">
         <img src={props.items.imgsrc1} alt={props.items.title} />
 

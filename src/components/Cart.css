@@ -2,18 +2,29 @@
     margin-top: 40px;
 }
 
-.project-container{
+/* card work,card */
+.main-project-container{
  display: flex;
  flex-wrap: wrap;
  margin-top: 40px;
 }
-.project-heading {
-    text-align: center;
-    background: linear-gradient(90deg,#ac2323,#0b536e);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-     
+.main-project-card{
+  padding: 30px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  animation-name: slideIn;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+  transition: transform 0.3s ease;
+}
+.main-project-card:hover {
+  transform: translateY(-5px); 
+}
+
+/* card list  */
+.project-container{
+ display: flex;
+ flex-wrap: wrap;
+ margin-top: 40px;
 }
 .project-card{
   padding: 30px;
@@ -26,6 +37,16 @@
 .project-card:hover {
   transform: translateY(-5px); 
 }
+.project-heading {
+    text-align: center;
+    background: linear-gradient(90deg,#ac2323,#0b536e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+     
+}
+
+
 
 .pro-btns{
     top: 30px;

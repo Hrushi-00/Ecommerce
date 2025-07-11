@@ -12,6 +12,8 @@ import appStore from "./utils/appStore";
 import PaymentDetails from "./components/pages/PaymentDetails"
 import PaymentSucess from "./components/pages/PaymentSucess"
 import Login from "./components/loginPages/Login";
+
+
 const App = () => {
   
   return (
@@ -29,6 +31,9 @@ const App = () => {
       <Route path="/paymentdetail" element={<PaymentDetails/>} />
       <Route path="/paymentsucess" element={<PaymentSucess/>}/>
       <Route path="/login" element={<Login/>} />
+   
+      
+
       
     </Routes>
     

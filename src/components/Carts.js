@@ -7,7 +7,7 @@ const Carts = () => {
   return (
     <div className="work-container">
       <h1 className="project-heading">Product</h1>
-      <div className="project-container">
+      <div className="main-project-container">
         {fetchApi.map((val, ind) => (
           <CartWork
             key={ind}
