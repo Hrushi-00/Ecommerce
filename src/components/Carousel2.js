@@ -16,9 +16,10 @@ const Carousel2 = (props) => {
         <h1 className='heding'>{props.name}</h1>
         <p className='discrip'>{props.description}</p>
         <a href='#'>Shop now</a>
+        
       </div>
       <div className="product--image">
-        <img src={props.image} alt='product image' />
+        <img src={props.image} alt={props.name} />
       </div>
     </div>
   );

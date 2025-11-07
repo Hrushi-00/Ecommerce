@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,  } from "react";
 import "./Cart.css";
 import { useDispatch } from "react-redux";
 import { removeItem } from "../utils/cartSlice";
@@ -22,11 +22,11 @@ const ProductSummaryPage = ({ items }) => {
     <div>
       {items.map((item, index) => (
         <div className="work-container" key={item.id}>
-          <div className="project-container">
+          <div className="project-container"> 
             <div className="project-card">
               <div className="product-cart-main">
                 <div className="product-card">
-                  <img src={item.imgsrc1} alt={item.title} />
+                  <img src={item.image} alt={item.title} />
                   <h2 className="project-title">{item.title}</h2>
                   <p className="product-price">
                     Price: ${parseFloat(item.price).toFixed(2)}

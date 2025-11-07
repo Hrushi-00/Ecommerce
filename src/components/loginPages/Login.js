@@ -1,79 +1,152 @@
-import React, { useState } from 'react';
-import './Login.css';
+import React, { useState } from "react";
+import axios from "axios";
+import "./Login.css";
+import { useNavigate } from "react-router-dom";
+const API_URL = process.env.REACT_APP_API_URL;
+const AuthPage = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+    address: "",
   });
 
+  // handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  // handle submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login data:', formData);
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        // login API
+        const { data } = await axios.post(
+          `${API_URL}/api/auth/login`,
+          { email: formData.email, password: formData.password },
+          { headers: { "Content-Type": "application/json" } }
+        );
+        localStorage.setItem("token", data.token);
+        alert("Login successful!");
+        navigate("/profile");
+      } else {
+        // signup API
+        const { data } = await axios.post(
+          `${API_URL}/api/auth/signup`,
+          formData,
+          { headers: { "Content-Type": "application/json" } }
+        );
+        localStorage.setItem("token", data.token);
+        alert("Signup successful!");
+        navigate("/profile");
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Welcome Back</h2>
-        <p className="subtitle">Please enter your details</p>
-        
-        <form onSubmit={handleSubmit} className="login-form">
+    <div className="auth-container">
+      <div className="auth-box">
+        <h2>{isLogin ? "Login" : "Signup"}</h2>
+
+        <form onSubmit={handleSubmit}>
+          {/* Signup-only fields */}
+          {!isLogin && (
+            <>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required={!isLogin}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Phone</label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required={!isLogin}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Address</label>
+                <input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  required={!isLogin}
+                />
+              </div>
+            </>
+          )}
+
+          {/* Common fields */}
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label>Email</label>
             <input
               type="email"
-              id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Enter your email"
               required
             />
           </div>
-          
+
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label>Password</label>
             <input
               type="password"
-              id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Enter your password"
               required
             />
           </div>
 
-          <div className="form-options">
-            <label className="remember-me">
-              <input type="checkbox" /> Remember me
-            </label>
-            <a href="/forgot-password" className="forgot-password">
-              Forgot password?
-            </a>
-          </div>
-
-          <button type="submit" className="login-button">
-            Sign In
+          <button className="auth-button" disabled={loading}>
+            {loading
+              ? isLogin
+                ? "Logging in..."
+                : "Signing up..."
+              : isLogin
+              ? "Login"
+              : "Signup"}
           </button>
-
-          <div className="signup-prompt">
-            Don't have an account? <a href="/signup">Sign up</a>
-          </div>
         </form>
+
+        <p className="toggle-prompt">
+          {isLogin ? "Don't have an account?" : "Already have an account?"}
+          <button
+            type="button"
+            className="toggle-btn"
+            onClick={() => setIsLogin(!isLogin)}
+          >
+            {isLogin ? "Sign up" : "Login"}
+          </button>
+        </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default AuthPage;

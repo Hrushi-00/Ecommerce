@@ -18,7 +18,7 @@ const Instagram = () => {
       <img src={instaImage5} alt='Multi-insta' />
       <img src={instaImage6} alt='Multi-insta' />
     </div>
-    <div class="instagram__text">
+    <div className="instagram__text">
         <h2 className='first-head'>Instagram</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>

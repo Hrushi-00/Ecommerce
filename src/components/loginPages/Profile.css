@@ -1,0 +1,114 @@
+.profile-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 20px 40px; /* space for fixed navbar */
+  background: #f5f6fa;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+}
+
+.message-box {
+  background: #4f46e5;
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+/* Left Side */
+.profile-left {
+  flex: 1;
+  min-width: 250px;
+  text-align: center;
+  border-right: 2px solid #e5e7eb;
+  padding-right: 20px;
+}
+
+.profile-image img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.logout-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Right Side */
+.profile-right {
+  flex: 2;
+  min-width: 300px;
+}
+
+.profile-right h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.profile-right form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-right input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.update-btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.password-section {
+  margin-top: 30px;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-content {
+    flex-direction: column;
+  }
+  .profile-left {
+    border-right: none;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 20px;
+  }
+}

@@ -12,6 +12,8 @@ import appStore from "./utils/appStore";
 import PaymentDetails from "./components/pages/PaymentDetails"
 import PaymentSucess from "./components/pages/PaymentSucess"
 import Login from "./components/loginPages/Login";
+import Favorites from "./components/Favorites";
+import ProfilePage from "./components/loginPages/ProfilePage";
 
 
 const App = () => {
@@ -31,7 +33,9 @@ const App = () => {
       <Route path="/paymentdetail" element={<PaymentDetails/>} />
       <Route path="/paymentsucess" element={<PaymentSucess/>}/>
       <Route path="/login" element={<Login/>} />
-   
+     <Route path="/favorites" element={<Favorites />} />
+     <Route path="/profile" element={<ProfilePage />} />
+ 
       
 
       
