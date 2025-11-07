@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
 import { FaBars, FaTimes, FaUserAlt, FaHeart } from "react-icons/fa";
-import Search from "./Search";
+import { MdHome } from "react-icons/md";
 import axios from "axios";
 
 const Navbar = () => {
@@ -19,48 +19,35 @@ const Navbar = () => {
   const cartItems = useSelector((store) => store.cart.items);
   const token = localStorage.getItem("token");
 
-  // Toggle mobile menu
+  // Toggle menu open/close
   const handleClick = () => setClick(!click);
 
-  // Toggle search
+  // Close menu manually
+  const closeMenu = () => setClick(false);
+
+  // Toggle search overlay
   const handleSearch = () => {
     setSearch(!search);
+    document.body.classList.toggle("search-active");
   };
 
   // Navbar background on scroll
-  const changeColor = () => {
-    setColor(window.scrollY >= 100);
-  };
+  const changeColor = () => setColor(window.scrollY >= 100);
 
-  // Navigate to cart
-  const carthandler = () => {
-    navigate("/addtocart");
-  };
+  // Navigation handlers
+  const carthandler = () => navigate("/addtocart");
+  const homeHandler = () => navigate("/");
+  const favoriteHandler = () => navigate("/favorites");
+  const userhandler = () => (token ? navigate("/profile") : navigate("/login"));
 
-  // Navigate to login/user
-  // Navigate to user profile if logged in, else login page
-const userhandler = () => {
-  if (token) {
-    navigate("/profile");
-  } else {
-    navigate("/login");
-  }
-};
-
-
-  // Navigate to favorites
-  const favoriteHandler = () => {
-    navigate("/favorites");
-  };
-
-  // Update cart count from Redux
+  // Cart count sync
   useEffect(() => {
     const count = cartItems.length;
     setCartCount(count);
     localStorage.setItem("cartCount", count);
   }, [cartItems]);
 
-  // Fetch favorite items count from backend
+  // Favorite count
   useEffect(() => {
     const fetchFavorites = async () => {
       if (!token) return;
@@ -68,19 +55,15 @@ const userhandler = () => {
         const res = await axios.get("http://localhost:8000/api/products/favorites", {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        if (res.data.favorites) {
-          setFavoriteCount(res.data.favorites.length);
-        }
+        if (res.data.favorites) setFavoriteCount(res.data.favorites.length);
       } catch (error) {
         console.error("Error fetching favorites:", error);
       }
     };
-
     fetchFavorites();
   }, [token]);
 
-  // Initialize cart count on mount
+  // Initial cart count
   useEffect(() => {
     const savedCount = parseInt(localStorage.getItem("cartCount")) || 0;
     setCartCount(savedCount);
@@ -91,49 +74,90 @@ const userhandler = () => {
   return (
     <>
       {search ? (
-        <Search search={search} handleSearch={handleSearch} />
-      ) : (
-        <div className={color ? "header header-bg" : "header"}>
-          <Link to="/">
-            <img src={logo} alt="Logo" />
-          </Link>
-
-          <ul className={click ? "nav-menu active" : "nav-menu"}>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/shop">Shop</Link></li>
-            <li><Link to="/pages">Pages</Link></li>
-            <li><Link to="/blog">Blog</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
-            <div className="search-bar">
-              <IoIosSearch onClick={handleSearch} />
-            </div>
-          </ul>
-
-          <div className="cart">
-            {/* Favorite Icon */}
-            <div className="favorite" onClick={favoriteHandler}>
-              <FaHeart size={25} style={{ color: "#000" }} />
-              {favoriteCount > 0 && <span>{favoriteCount}</span>}
-            </div>
-
-            {/* Cart Icon */}
-            <IoCartOutline onClick={carthandler} />
-            <span>{cartCount}</span>
-
-            {/* User Icon */}
-            <div className="user">
-              <FaUserAlt size={25} style={{ color: "#000" }} onClick={userhandler} />
-            </div>
-          </div>
-
-          <div className="hamburger" onClick={handleClick}>
-            {click ? (
-              <FaTimes size={20} style={{ color: "#000000" }} />
-            ) : (
-              <FaBars size={20} style={{ color: "#000000" }} />
-            )}
-          </div>
+        <div className="Search-input slide-in">
+          <div className="cross" onClick={handleSearch}>+</div>
+          <input
+            type="text"
+            placeholder="Search products..."
+            className="search-write"
+            autoFocus
+          />
         </div>
+      ) : (
+        <>
+          {/* ======= Top Navbar ======= */}
+          <div className={color ? "header header-bg" : "header"}>
+            <Link to="/">
+              <img src={logo} alt="Logo" />
+            </Link>
+
+            {/* ======= Nav Menu ======= */}
+            <ul className={click ? "nav-menu active" : "nav-menu"}>
+              {/* Add close (X) button inside mobile menu */}
+              {click && (
+                <div className="menu-close" onClick={closeMenu}>
+                  <FaTimes size={25} />
+                </div>
+              )}
+              <li><Link to="/" onClick={closeMenu}>Home</Link></li>
+              <li><Link to="/shop" onClick={closeMenu}>Shop</Link></li>
+              <li><Link to="/pages" onClick={closeMenu}>Pages</Link></li>
+              <li><Link to="/blog" onClick={closeMenu}>Blog</Link></li>
+              <li><Link to="/contact" onClick={closeMenu}>Contact</Link></li>
+            </ul>
+
+            {/* ======= Right Section ======= */}
+            <div className="right-icons">
+              {/* ======= Desktop Icons ======= */}
+              <div className="desktop-icons">
+                <IoIosSearch className="search-icon" onClick={handleSearch} title="Search" />
+                <div className="favorite" onClick={favoriteHandler}>
+                  <FaHeart size={25} style={{ color: "#000" }} />
+                  {favoriteCount > 0 && <span>{favoriteCount}</span>}
+                </div>
+                <div className="cart-icon" onClick={carthandler}>
+                  <IoCartOutline size={25} />
+                  {cartCount > 0 && <span>{cartCount}</span>}
+                </div>
+                <div className="user">
+                  <FaUserAlt size={25} style={{ color: "#000" }} onClick={userhandler} />
+                </div>
+              </div>
+
+              {/* ======= Mobile Icons ======= */}
+              <div className="mobile-icons">
+                <IoIosSearch className="search-icon" onClick={handleSearch} />
+                <div className="hamburger" onClick={handleClick}>
+                  {click ? (
+                    <FaTimes size={22} style={{ color: "#000000" }} />
+                  ) : (
+                    <FaBars size={22} style={{ color: "#000000" }} />
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ======= Bottom Navigation (Mobile Only) ======= */}
+          <div className="bottom-navbar">
+            <div className="bottom-nav-item" onClick={homeHandler}>
+              <MdHome size={24} />
+              <span className="nav-label">Home</span>
+            </div>
+            <div className="bottom-nav-item" onClick={carthandler}>
+              <IoCartOutline size={24} />
+              <span className="nav-label">Cart</span>
+            </div>
+            <div className="bottom-nav-item" onClick={favoriteHandler}>
+              <FaHeart size={24} />
+              <span className="nav-label">Favorite</span>
+            </div>
+            <div className="bottom-nav-item" onClick={userhandler}>
+              <FaUserAlt size={22} />
+              <span className="nav-label">Profile</span>
+            </div>
+          </div>
+        </>
       )}
     </>
   );
