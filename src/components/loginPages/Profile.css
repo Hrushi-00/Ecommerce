@@ -1,112 +1,174 @@
-.profile-page {
+.profile-wrapper {
+  background: #f9fafb;
+  min-height: 100vh;
+  padding: 100px 20px 60px; /* space for fixed navbar */
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 100px 20px 40px; /* space for fixed navbar */
-  background: #f5f6fa;
-  min-height: 100vh;
+  align-items: flex-start;
   font-family: "Poppins", sans-serif;
 }
 
-.profile-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+.profile-container {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  max-width: 950px;
   width: 100%;
-  max-width: 900px;
-  display: flex;
-  flex-direction: column;
   padding: 30px;
+  border: 2px solid #11182710;
 }
 
-.message-box {
-  background: #4f46e5;
+/* Toast Message */
+.toast-msg {
+  background: linear-gradient(90deg, #ac2323, #0b536e);
   color: #fff;
-  padding: 10px;
-  border-radius: 6px;
+  padding: 10px 20px;
+  border-radius: 8px;
   text-align: center;
   margin-bottom: 20px;
+  font-weight: 500;
 }
 
-.profile-content {
+/* Grid Layout */
+.profile-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 40px;
 }
 
-/* Left Side */
-.profile-left {
+/* ===== Left Panel ===== */
+.profile-sidebar {
   flex: 1;
   min-width: 250px;
   text-align: center;
   border-right: 2px solid #e5e7eb;
-  padding-right: 20px;
+  padding-right: 25px;
 }
 
-.profile-image img {
+.avatar-box img {
   width: 130px;
   height: 130px;
   border-radius: 50%;
   object-fit: cover;
+  border: 3px solid #0b536e40;
   margin-bottom: 15px;
 }
 
-.logout-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 6px;
+.user-name {
+  font-size: 1.4rem;
+  background: linear-gradient(90deg, #0b536e, #ac2323);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.user-email,
+.user-phone {
+  color: #4b5563;
+  margin: 4px 0;
+}
+
+.outline-btn {
+  background: #fff;
+  border: 2px solid #111827;
+  color: #111827;
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
+  transition: all 0.3s ease;
+  font-weight: 600;
 }
 
-/* Right Side */
-.profile-right {
+.outline-btn:hover {
+  background: #111827;
+  color: #fff;
+}
+
+.logout {
+  margin-top: 15px;
+  border-color: #ac2323;
+  color: #ac2323;
+}
+
+.logout:hover {
+  background: #ac2323;
+  color: #fff;
+}
+
+/* ===== Right Panel ===== */
+.profile-details {
   flex: 2;
-  min-width: 300px;
+  min-width: 320px;
 }
 
-.profile-right h3 {
-  color: #333;
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #0b536e, #ac2323);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 15px;
 }
 
-.profile-right form {
+/* Form Styling */
+.profile-form,
+.password-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.profile-right input {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
+.profile-form label,
+.password-form label {
+  font-weight: 500;
+  color: #374151;
 }
 
-.update-btn {
-  background: #4f46e5;
-  color: white;
-  border: none;
+.profile-form input,
+.password-form input {
   padding: 10px;
-  border-radius: 6px;
+  border: 1.8px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.profile-form input:focus,
+.password-form input:focus {
+  border-color: #0b536e;
+}
+
+/* Buttons */
+.primary-btn {
+  padding: 10px 18px;
+  background-color: #fff;
+  border: 2px solid #111827;
+  border-radius: 8px;
+  color: #111827;
+  font-weight: 600;
   margin-top: 10px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+.primary-btn:hover {
+  background: #111827;
+  color: #fff;
+}
+
+/* Password Section */
 .password-section {
   margin-top: 30px;
-  border-top: 1px solid #ddd;
   padding-top: 20px;
+  border-top: 2px solid #e5e7eb;
 }
 
-/* Responsive */
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .profile-content {
+  .profile-grid {
     flex-direction: column;
   }
-  .profile-left {
+  .profile-sidebar {
     border-right: none;
     border-bottom: 2px solid #e5e7eb;
     padding-bottom: 20px;

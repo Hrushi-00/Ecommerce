@@ -49,7 +49,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <p>
-          Copyright © 2025 - All rights reserved | This template is made with ❤️ by <a href="#">Hrushikesh</a>
+          Copyright © 2025 - All rights reserved | This website is made by <a href="https://hrushikesh.vercel.app/">Hrushikesh</a>
         </p>
       </div>
     </footer>

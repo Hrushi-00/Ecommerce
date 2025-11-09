@@ -3,7 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import "./Profile.css";
+
 const API_URL = process.env.REACT_APP_API_URL;
+
 const ProfilePage = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -15,14 +17,10 @@ const ProfilePage = () => {
     newPassword: "",
   });
 
-  // 🔐 Redirect to login if not authenticated
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
+    if (!token) navigate("/login");
   }, [token, navigate]);
 
-  // ✅ Fetch user profile
   const fetchProfile = async () => {
     try {
       const { data } = await axios.get(`${API_URL}/api/auth/profile`, {
@@ -39,13 +37,11 @@ const ProfilePage = () => {
     if (token) fetchProfile();
   }, [token]);
 
-  // ✅ Show message utility
   const showMessage = (msg) => {
     setMessage(msg);
     setTimeout(() => setMessage(""), 2500);
   };
 
-  // ✅ Update profile
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -70,15 +66,12 @@ const ProfilePage = () => {
     }
   };
 
-  // ✅ Change password
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `${API_URL}/api/auth/changePassword`,
-        passwordData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await axios.put(`${API_URL}/api/auth/changePassword`, passwordData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       showMessage("Password changed successfully!");
       setPasswordData({ oldPassword: "", newPassword: "" });
     } catch (error) {
@@ -87,7 +80,6 @@ const ProfilePage = () => {
     }
   };
 
-  // ✅ Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -96,32 +88,33 @@ const ProfilePage = () => {
   return (
     <>
       <Navbar />
-      <div className="profile-page">
-        <div className="profile-card">
-          {message && <div className="message-box">{message}</div>}
+      <div className="profile-wrapper">
+        <div className="profile-container">
+          {message && <div className="toast-msg">{message}</div>}
 
           {profile ? (
-            <div className="profile-content">
-              {/* Left Side */}
-              <div className="profile-left">
-                <div className="profile-image">
+            <div className="profile-grid">
+              {/* Left side */}
+              <div className="profile-sidebar">
+                {/* <div className="avatar-box">
                   <img
                     src="https://via.placeholder.com/150"
                     alt="User Avatar"
                   />
-                </div>
-                <h2>{profile.name}</h2>
-                <p>{profile.email}</p>
-                <p>{profile.phone}</p>
-                <button className="logout-btn" onClick={handleLogout}>
+                </div> */}
+                <h2 className="user-name">{profile.name}</h2>
+                <p className="user-email">{profile.email}</p>
+                <p className="user-phone">{profile.phone}</p>
+
+                <button className="outline-btn logout" onClick={handleLogout}>
                   Logout
                 </button>
               </div>
 
-              {/* Right Side */}
-              <div className="profile-right">
-                <h3>Edit Profile</h3>
-                <form onSubmit={handleProfileUpdate}>
+              {/* Right side */}
+              <div className="profile-details">
+                <h3 className="section-title">Edit Profile</h3>
+                <form onSubmit={handleProfileUpdate} className="profile-form">
                   <label>Name</label>
                   <input
                     type="text"
@@ -132,11 +125,7 @@ const ProfilePage = () => {
                   />
 
                   <label>Email</label>
-                  <input
-                    type="email"
-                    value={profile.email}
-                    readOnly
-                  />
+                  <input type="email" value={profile.email} readOnly />
 
                   <label>Phone</label>
                   <input
@@ -156,14 +145,21 @@ const ProfilePage = () => {
                     }
                   />
 
-                  <button type="submit" className="update-btn" disabled={loading}>
+                  <button
+                    type="submit"
+                    className="primary-btn"
+                    disabled={loading}
+                  >
                     {loading ? "Updating..." : "Update Profile"}
                   </button>
                 </form>
 
                 <div className="password-section">
-                  <h3>Change Password</h3>
-                  <form onSubmit={handlePasswordChange}>
+                  <h3 className="section-title">Change Password</h3>
+                  <form
+                    onSubmit={handlePasswordChange}
+                    className="password-form"
+                  >
                     <label>Old Password</label>
                     <input
                       type="password"
@@ -192,7 +188,7 @@ const ProfilePage = () => {
                       required
                     />
 
-                    <button type="submit" className="update-btn">
+                    <button type="submit" className="primary-btn">
                       Change Password
                     </button>
                   </form>

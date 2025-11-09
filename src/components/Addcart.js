@@ -21,14 +21,23 @@ const Addcart = () => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Clear all items
-  const handleClearCart = () => {
-    if (window.confirm("Are you sure you want to clear the cart?")) {
-      dispatch(clearCart());
-      setMessage("All items removed from cart.");
-      setTimeout(() => setMessage(""), 2000);
-    }
-  };
+ 
+  // Clear cart (API + Redux)
+ const handleClearCart = async () => {
+  try {
+    await axios.delete(`${API_URL}/api/products/clearcart`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    dispatch(clearCart());
+    setMessage("All items removed from cart.");
+    setTimeout(() => setMessage(""), 2000);
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    setMessage("Failed to clear cart.");
+    setTimeout(() => setMessage(""), 2000);
+  }
+};
+
 
   // Remove single item (API + Redux)
   const handleRemoveItem = async (itemId) => {
