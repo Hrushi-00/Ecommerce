@@ -20,6 +20,8 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!token) navigate("/login");
   }, [token, navigate]);
+useEffect(() => {
+  if (!token) return;
 
   const fetchProfile = async () => {
     try {
@@ -33,9 +35,11 @@ const ProfilePage = () => {
     }
   };
 
-  useEffect(() => {
-    if (token) fetchProfile();
-  }, [token]);
+  fetchProfile();
+}, [token]);
+
+
+
 
   const showMessage = (msg) => {
     setMessage(msg);

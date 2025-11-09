@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './CarouselStyle.css';
+import { Link } from "react-router-dom";
 
 const Carousel2 = (props) => {
   const [animate, setAnimate] = useState(false);
@@ -15,7 +16,7 @@ const Carousel2 = (props) => {
         <p className='first'>Summer Collection</p>
         <h1 className='heding'>{props.name}</h1>
         <p className='discrip'>{props.description}</p>
-        <a href='#'>Shop now</a>
+       <Link to="/shop">Shop Now</Link>
         
       </div>
       <div className="product--image">

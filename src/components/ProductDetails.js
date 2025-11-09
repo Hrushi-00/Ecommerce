@@ -5,8 +5,8 @@ import Navbar from "./Navbar";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addItem } from "../utils/cartSlice";
-import { ToastContainer, toast } from "react-toastify"; // ✅ Toastify import
-import "react-toastify/dist/ReactToastify.css"; // ✅ Toastify styles
+import {  toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css"; 
 const API_URL = process.env.REACT_APP_API_URL;
 const ProductDetails = () => {
   const { state } = useLocation();
