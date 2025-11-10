@@ -19,8 +19,8 @@ const Navbar = () => {
   const [favoriteCount, setFavoriteCount] = useState(0);
   const [search, setSearch] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [setSearchResults] = useState([]);
+  const [ setLoading] = useState(false);
 
   const navigate = useNavigate();
   const cartItems = useSelector((store) => store.cart.items);
