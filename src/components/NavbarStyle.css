@@ -183,6 +183,7 @@
 /* =====================
    SEARCH OVERLAY
    ===================== */
+/* === Your existing styles === */
 .Search-input {
   height: 100vh;
   width: 100%;
@@ -196,6 +197,7 @@
   align-items: center;
   justify-content: center;
   animation: slideIn 0.5s ease forwards;
+   pointer-events: auto;
 }
 
 .Search-input input {
@@ -207,6 +209,9 @@
   outline: none;
   color: white;
   text-align: center;
+    pointer-events: all;
+  position: relative;
+  z-index: 1001;
 }
 
 @media screen and (max-width: 768px) {
@@ -232,6 +237,90 @@
   transform: rotate(45deg);
   cursor: pointer;
 }
+
+/* === Added styles for Search Result Integration === */
+
+.search-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Search results container below input */
+.search-dropdown {
+  position: absolute;
+  top: 70px; /* just below the input */
+  width: 45%;
+  max-height: 400px;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 768px) {
+  .search-dropdown {
+    width: 80%;
+  }
+}
+
+/* Individual product result */
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #222;
+  transition: background 0.2s ease;
+}
+
+.search-item:hover {
+  background: #222;
+}
+
+.search-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.search-item .title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.search-item span {
+  color: #aaa;
+  font-size: 15px;
+}
+
+/* Scrollbar customization for dropdown */
+.search-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+.search-dropdown::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+/* Optional slide-in animation */
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 
 /* =====================
    ANIMATION

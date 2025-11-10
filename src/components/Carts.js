@@ -5,19 +5,21 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addItem } from "../utils/cartSlice";
 import { FaHeart, FaRegHeart, FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import { ToastContainer, toast } from "react-toastify"; // ✅ Toastify import
-import "react-toastify/dist/ReactToastify.css"; // ✅ Toastify styles
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Carts = () => {
   const [products, setProducts] = useState([]);
+  const [filtered, setFiltered] = useState([]); // filtered product list
+  const [activeTab, setActiveTab] = useState("best"); // active tab
   const [favorites, setFavorites] = useState([]);
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // ✅ Toast utility
+  // ✅ Toast helper
   const showMessage = (text, type = "info") => {
     toast[type](text, {
       position: "top-right",
@@ -26,18 +28,18 @@ const Carts = () => {
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
       theme: "colored",
     });
   };
 
-  // ✅ Fetch products
+  // ✅ Fetch all products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await fetch(`${API_URL}/api/products/products`);
         const data = await res.json();
         setProducts(data);
+        setFiltered(data); // default show all
       } catch (error) {
         console.error("Error fetching products:", error);
         showMessage("Failed to load products", "error");
@@ -46,7 +48,7 @@ const Carts = () => {
     fetchProducts();
   }, []);
 
-  // ✅ Fetch favorites
+  // ✅ Fetch favorites for current user
   useEffect(() => {
     const fetchFavorites = async () => {
       if (!token) return;
@@ -63,7 +65,23 @@ const Carts = () => {
     fetchFavorites();
   }, [token]);
 
-  // ✅ Add to favorites
+  // ✅ Handle tab change (Best Sellers, New Arrivals, Hot Sales)
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    let sorted = [...products];
+
+    if (tab === "best") {
+      sorted.sort((a, b) => b.rating - a.rating); // highest rated
+    } else if (tab === "new") {
+      sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // latest
+    } else if (tab === "hot") {
+      sorted.sort((a, b) => b.price - a.price); // highest price
+    }
+
+    setFiltered(sorted);
+  };
+
+  // ✅ Add favorite
   const handleAddFavorite = async (productId) => {
     try {
       const res = await axios.post(
@@ -84,7 +102,7 @@ const Carts = () => {
     }
   };
 
-  // ✅ Remove from favorites
+  // ✅ Remove favorite
   const handleRemoveFavorite = async (productId) => {
     try {
       const res = await axios.delete(`${API_URL}/api/products/favorites/${productId}`, {
@@ -103,8 +121,23 @@ const Carts = () => {
     }
   };
 
+  // ✅ Toggle favorites
+  const handleToggleFavorite = (productId) => {
+    if (!token) {
+      showMessage("Please login first to manage favorites!", "warning");
+      window.location.href = "/login";
+      return;
+    }
+
+    if (favorites.includes(productId)) {
+      handleRemoveFavorite(productId);
+    } else {
+      handleAddFavorite(productId);
+    }
+  };
+
   // ✅ Add to cart
-const handleAddToCart = async (product) => {
+  const handleAddToCart = async (product) => {
     if (!token) {
       showMessage("Please login first to add items to cart!");
       window.location.href = "/login";
@@ -118,36 +151,15 @@ const handleAddToCart = async (product) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log("Add to Cart Response:", res.data);
-
       if (res.data.success) {
         dispatch(addItem(product)); // Add to Redux
-        showMessage(" Product added to cart successfully!");
+        showMessage("Product added to cart successfully!", "success");
       } else {
-        showMessage(res.data.message || " Failed to add to cart.");
+        showMessage(res.data.message || "Failed to add to cart.", "warning");
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
-
-      if (error.response && error.response.data && error.response.data.message) {
-        showMessage(error.response.data.message); // show backend message like "Already in cart"
-      } else {
-        showMessage(" Error adding product to cart.");
-      }
-    }
-  };
-  // ✅ Toggle favorites
-  const handleToggleFavorite = (productId) => {
-    if (!token) {
-      showMessage("Please login first to manage favorites!", "warning");
-      window.location.href = "/login";
-      return;
-    }
-
-    if (favorites.includes(productId)) {
-      handleRemoveFavorite(productId);
-    } else {
-      handleAddFavorite(productId);
+      showMessage("Error adding product to cart.", "error");
     }
   };
 
@@ -166,7 +178,7 @@ const handleAddToCart = async (product) => {
     return <div className="rating-stars">{stars}</div>;
   };
 
-  // ✅ On card click → navigate to product details
+  // ✅ Navigate to product details
   const handleCardClick = (product) => {
     navigate(`/product/${product._id}`, { state: { product } });
   };
@@ -175,15 +187,39 @@ const handleAddToCart = async (product) => {
     <div className="work-container">
       <h1 className="project-heading">Products</h1>
 
+      {/* ✅ Top Tabs Section */}
+      <div className="product-tabs">
+        <span
+          className={activeTab === "best" ? "tab active" : "tab"}
+          onClick={() => handleTabChange("best")}
+        >
+          Best Sellers
+        </span>
+        <span
+          className={activeTab === "new" ? "tab active" : "tab"}
+          onClick={() => handleTabChange("new")}
+        >
+          New Arrivals
+        </span>
+        <span
+          className={activeTab === "hot" ? "tab active" : "tab"}
+          onClick={() => handleTabChange("hot")}
+        >
+          Hot Sales
+        </span>
+      </div>
+
+      {/* ✅ Product Grid */}
       <div className="main-project-container">
-        {products.length > 0 ? (
-          products.map((product) => (
+        {filtered.length > 0 ? (
+          filtered.map((product) => (
             <div
               key={product._id}
               className="main-project-card"
               onClick={() => handleCardClick(product)}
             >
               <div className="product">
+                {/* Favorite Icon */}
                 <div
                   className="favorite-icon"
                   onClick={(e) => {
@@ -198,14 +234,13 @@ const handleAddToCart = async (product) => {
                   )}
                 </div>
 
+                {/* Product Image */}
                 <img
-                  src={
-                    product.image ||
-                    "https://via.placeholder.com/300x200?text=No+Image"
-                  }
+                  src={product.image || "https://via.placeholder.com/300x200?text=No+Image"}
                   alt={product.title}
                 />
 
+                {/* Product Info */}
                 <div className="pro-details">
                   <h2 className="project-title">{product.title}</h2>
                   <p>Price: ₹{product.price}</p>
@@ -231,7 +266,6 @@ const handleAddToCart = async (product) => {
         )}
       </div>
 
-      {/* ✅ Toast container to render notifications */}
       <ToastContainer />
     </div>
   );

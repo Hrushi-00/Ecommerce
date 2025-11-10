@@ -15,6 +15,7 @@ import Login from "./components/loginPages/Login";
 import Favorites from "./components/Favorites";
 import ProfilePage from "./components/loginPages/ProfilePage";
 import ProductDetails from "./components/ProductDetails";
+import SearchResults from "./components/SearchResults";
 
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
      <Route path="/favorites" element={<Favorites />} />
      <Route path="/profile" element={<ProfilePage />} />
        <Route path="/product/:id" element={<ProductDetails />} />
+       <Route path="/search" element={<SearchResults />} />
  
       
 

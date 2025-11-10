@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
-import "./Addcart.css"; // External CSS file
+import "./Addcart.css"; 
 import axios from "axios";
 import {
   clearCart,

@@ -195,7 +195,7 @@
 
 @media (max-width: 480px) {
   .main-project-container {
-    grid-template-columns: repeat(2, 1fr); /* ✅ 2 per row on mobile */
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 
@@ -211,6 +211,8 @@
     font-size: 0.9rem;
   }
 }
+
+/* ======= Toastify Styles ======= */
 .Toastify__toast {
   font-size: 14px;
   border-radius: 10px;
@@ -228,4 +230,105 @@
 }
 .Toastify__toast--info {
   background-color: #2563eb;
+}
+
+/* =========================
+   PRODUCT FILTER TABS
+========================= */
+.product-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0 30px;
+  gap: 60px;
+  animation: tabFadeIn 0.5s ease-in-out;
+}
+
+.product-tabs .tab {
+  font-size: 20px;
+  color: #b3b3b3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  position: relative;
+}
+
+.product-tabs .tab:hover {
+  color: #000;
+}
+
+.product-tabs .tab.active {
+  color: #000;
+  font-weight: 600;
+}
+
+/* === Animated underline under active tab === */
+.product-tabs .tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: #000;
+  animation: underlineGrow 0.4s ease forwards;
+}
+
+/* =========================
+   ✨ ANIMATIONS
+========================= */
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes underlineGrow {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Apply fade-in to cards === */
+.main-project-card {
+  animation: fadeInUp 0.5s ease both;
+}
+
+/* Stagger effect */
+.main-project-card:nth-child(1) { animation-delay: 0.05s; }
+.main-project-card:nth-child(2) { animation-delay: 0.1s; }
+.main-project-card:nth-child(3) { animation-delay: 0.15s; }
+.main-project-card:nth-child(4) { animation-delay: 0.2s; }
+.main-project-card:nth-child(5) { animation-delay: 0.25s; }
+.main-project-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* Optional fade-out for tab switch */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.fade-out {
+  animation: fadeOut 0.2s ease forwards;
 }

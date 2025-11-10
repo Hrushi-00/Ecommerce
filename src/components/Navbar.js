@@ -1,13 +1,16 @@
 import "./NavbarStyle.css";
 import { IoCartOutline } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
 import { FaBars, FaTimes, FaUserAlt, FaHeart } from "react-icons/fa";
 import { MdHome } from "react-icons/md";
 import axios from "axios";
+import debounce from "lodash.debounce";
+// import React, { useState, useEffect, useCallback } from "react";
+// import debounce from "lodash.debounce";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
@@ -15,39 +18,45 @@ const Navbar = () => {
   const [cartCount, setCartCount] = useState(0);
   const [favoriteCount, setFavoriteCount] = useState(0);
   const [search, setSearch] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const cartItems = useSelector((store) => store.cart.items);
   const token = localStorage.getItem("token");
 
-  // Toggle menu open/close
-  const handleClick = () => setClick(!click);
+  // =============================
+  // Handlers
+  // =============================
 
-  // Close menu manually
+  const handleClick = () => setClick(!click);
   const closeMenu = () => setClick(false);
 
-  // Toggle search overlay
   const handleSearch = () => {
     setSearch(!search);
     document.body.classList.toggle("search-active");
+    setSearchText("");
+    setSearchResults([]);
   };
 
-  // Navbar background on scroll
   const changeColor = () => setColor(window.scrollY >= 100);
 
-  // Navigation handlers
   const carthandler = () => navigate("/addtocart");
   const homeHandler = () => navigate("/");
   const favoriteHandler = () => navigate("/favorites");
   const userhandler = () => (token ? navigate("/profile") : navigate("/login"));
 
-  // Cart count sync
+  // =============================
+  // Cart + Favorite Count
+  // =============================
+
   useEffect(() => {
     const count = cartItems.length;
     setCartCount(count);
     localStorage.setItem("cartCount", count);
   }, [cartItems]);
 
-  // Favorite count
   useEffect(() => {
     const fetchFavorites = async () => {
       if (!token) return;
@@ -63,7 +72,6 @@ const Navbar = () => {
     fetchFavorites();
   }, [token]);
 
-  // Initial cart count
   useEffect(() => {
     const savedCount = parseInt(localStorage.getItem("cartCount")) || 0;
     setCartCount(savedCount);
@@ -71,20 +79,71 @@ const Navbar = () => {
 
   window.addEventListener("scroll", changeColor);
 
+  // =============================
+  // Search Functionality
+  // =============================
+
+ const searchProducts = async (value) => {
+  if (!value.trim()) {
+    setSearchResults([]);
+    return;
+  }
+
+  try {
+    setLoading(true);
+    const res = await axios.get(`http://localhost:8000/api/products/search?q=${value}`);
+    setSearchResults(res.data.products || []);
+  } catch (error) {
+    console.error("Error searching:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+const handleSearchChange = useCallback(
+  debounce((e) => {
+    const value = e.target.value;
+    searchProducts(value);
+  }, 400),
+  [] // empty dependency so debounce instance doesn't reset every render
+);
+
+
+  // =============================
+  // Render
+  // =============================
+
   return (
     <>
-      {search ? (
-        <div className="Search-input slide-in">
-          <div className="cross" onClick={handleSearch}>+</div>
-          <input
-            type="text"
-            placeholder="Search products..."
-            className="search-write"
-            autoFocus
-          />
-        </div>
-      ) : (
-        <>
+     {search ? (
+ <div className="Search-input slide-in">
+  <div className="cross" onClick={handleSearch}>+</div>
+
+  <div className="search-container">
+    <input
+      id="search-products"
+      name="search"
+      type="text"
+      placeholder="Search products..."
+      className="search-write"
+      value={searchText}
+      onChange={(e) => setSearchText(e.target.value)}
+      autoFocus
+      autoComplete="off"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && searchText.trim() !== "") {
+          navigate(`/search?q=${encodeURIComponent(searchText.trim())}`);
+          setSearch(false);
+          setSearchText("");
+        }
+      }}
+    />
+  </div>
+</div>
+
+) : (
+  /* your other navbar code */
+<>
           {/* ======= Top Navbar ======= */}
           <div className={color ? "header header-bg" : "header"}>
             <Link to="/">
@@ -93,7 +152,6 @@ const Navbar = () => {
 
             {/* ======= Nav Menu ======= */}
             <ul className={click ? "nav-menu active" : "nav-menu"}>
-              {/* Add close (X) button inside mobile menu */}
               {click && (
                 <div className="menu-close" onClick={closeMenu}>
                   <FaTimes size={25} />
