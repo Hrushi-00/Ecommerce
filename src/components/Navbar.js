@@ -1,14 +1,14 @@
 import "./NavbarStyle.css";
 import { IoCartOutline } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
-import React, { useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState, } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
 import { FaBars, FaTimes, FaUserAlt, FaHeart } from "react-icons/fa";
 import { MdHome } from "react-icons/md";
 import axios from "axios";
-import debounce from "lodash.debounce";
+// import debounce from "lodash.debounce";
 // import React, { useState, useEffect, useCallback } from "react";
 // import debounce from "lodash.debounce";
 
@@ -19,8 +19,10 @@ const Navbar = () => {
   const [favoriteCount, setFavoriteCount] = useState(0);
   const [search, setSearch] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [setSearchResults] = useState([]);
-  const [ setLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [searchResults, setSearchResults] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const cartItems = useSelector((store) => store.cart.items);
@@ -83,6 +85,7 @@ const Navbar = () => {
   // Search Functionality
   // =============================
 
+ // eslint-disable-next-line no-unused-vars
  const searchProducts = async (value) => {
   if (!value.trim()) {
     setSearchResults([]);
@@ -100,13 +103,15 @@ const Navbar = () => {
   }
 };
 
-const handleSearchChange = useCallback(
-  debounce((e) => {
-    const value = e.target.value;
-    searchProducts(value);
-  }, 400),
-  [] // empty dependency so debounce instance doesn't reset every render
-);
+// const handleSearchChange = useCallback(
+//   debounce((e) => {
+//     const value = e.target.value;
+//     searchProducts(value);
+//   }, 400),
+//   [] 
+// );
+
+const handleSearchChange = (e) => setSearchText(e.target.value);
 
 
   // =============================
@@ -127,7 +132,7 @@ const handleSearchChange = useCallback(
       placeholder="Search products..."
       className="search-write"
       value={searchText}
-      onChange={(e) => setSearchText(e.target.value)}
+   onChange={handleSearchChange}
       autoFocus
       autoComplete="off"
       onKeyDown={(e) => {
