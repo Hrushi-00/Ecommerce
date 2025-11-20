@@ -9,6 +9,7 @@ import Seal from '../components/Seal'
 import Instagram from '../components/Instagram'
 import FashionNew from '../components/FashionNew'
 import Footer from '../components/Footer'
+import ProductList from '../components/ProductList'
 
 // import Focuscardsdemo from '../components/ui/Focuscardsdemo'
 
@@ -23,6 +24,7 @@ const Home = () => {
     <ClothingCollections />
     <Carts />
     <Seal />
+    <ProductList />
     <Instagram />
     <FashionNew/>
     {/* < Focuscardsdemo /> */}

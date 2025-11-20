@@ -1,6 +1,7 @@
 
 .fashionNew-head{
     margin: 80px 0px 90px 0px ;
+  
     
 }
 .fashion-name , .fashion {
@@ -114,4 +115,11 @@ background-color: #fff;
 }
 .fashionNew-head .project-container{
     padding:0px 50px 0px 0px;
+    display: flex;
+}
+@media screen and (max-width: 768px) {
+    .fashionNew-head .project-container{
+        padding:0px 0px 0px 0px;
+        display: block;
+    }
 }

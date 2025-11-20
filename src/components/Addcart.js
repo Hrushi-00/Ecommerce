@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import "./Addcart.css"; 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import {
   clearCart,
   removeItem,
@@ -15,7 +17,7 @@ const Addcart = () => {
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const [message, setMessage] = useState("");
-
+const navigate = useNavigate();
   // Save cart to local storage when changed
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -133,12 +135,12 @@ const Addcart = () => {
                 <button className="clear-btn" onClick={handleClearCart}>
                   Clear Cart
                 </button>
-                <button
-                  className="checkout-btn"
-                  onClick={() => alert("Proceeding to checkout...")}
-                >
-                  Proceed to Checkout
-                </button>
+              <button
+  className="checkout-btn"
+  onClick={() => navigate("/checkout")}
+>
+  Proceed to Checkout
+</button>
               </div>
             </div>
           </>

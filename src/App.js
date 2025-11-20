@@ -16,6 +16,10 @@ import Favorites from "./components/Favorites";
 import ProfilePage from "./components/loginPages/ProfilePage";
 import ProductDetails from "./components/ProductDetails";
 import SearchResults from "./components/SearchResults";
+import ProductList from "./components/ProductList";
+import Checkout from "./components/Checkout";
+import OrderHistory from "./components/OrderHistory";
+import OrderDetails from "./components/OrderDetails";
 
 
 const App = () => {
@@ -39,7 +43,11 @@ const App = () => {
      <Route path="/profile" element={<ProfilePage />} />
        <Route path="/product/:id" element={<ProductDetails />} />
        <Route path="/search" element={<SearchResults />} />
+       <Route path="/featured-products" element={<ProductList />} />
+       <Route path="/checkout" element={<Checkout />} />
  
+<Route path="/orders" element={<OrderHistory />} />
+<Route path="/order/:id" element={<OrderDetails />} />
       
 
       
