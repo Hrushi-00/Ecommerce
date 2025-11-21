@@ -9,6 +9,7 @@ const Checkout = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const token = localStorage.getItem("token");
 
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -32,12 +33,14 @@ const Checkout = () => {
     0
   );
 
-  // Submit order
+  // Place order
   const handlePlaceOrder = async () => {
     if (!formData.fullname || !formData.address) {
       setMessage("Please fill all required fields");
       return;
     }
+
+    setLoading(true);
 
     try {
       const res = await axios.post(
@@ -50,15 +53,18 @@ const Checkout = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      setLoading(false);
+
       if (res.data.success) {
         setMessage("Order placed successfully!");
         setTimeout(() => {
-          window.location.href = "/"; 
+          window.location.href = "/orders"; // redirect to order page
         }, 2000);
       }
     } catch (error) {
       console.error("Order Error:", error);
       setMessage("Failed to place order");
+      setLoading(false);
     }
   };
 
@@ -69,80 +75,14 @@ const Checkout = () => {
       {message && <p className="checkout-msg">{message}</p>}
 
       <div className="checkout-content">
-        {/* Shipping form */}
-        <div className="checkout-form">
-          <h2>Shipping Details</h2>
 
-          <input
-            type="text"
-            name="fullname"
-            placeholder="Full Name *"
-            onChange={handleChange}
-          />
-
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-          />
-
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone Number"
-            onChange={handleChange}
-          />
-
-          <textarea
-            name="address"
-            placeholder="Address *"
-            onChange={handleChange}
-          />
-
-          <div className="inline-fields">
-            <input
-              type="text"
-              name="city"
-              placeholder="City"
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="state"
-              placeholder="State"
-              onChange={handleChange}
-            />
-          </div>
-
-          <input
-            type="text"
-            name="zip"
-            placeholder="ZIP Code"
-            onChange={handleChange}
-          />
-
-          <h3>Payment Method</h3>
-          <select
-            name="paymentMethod"
-            onChange={handleChange}
-            value={formData.paymentMethod}
-          >
-            <option value="COD">Cash on Delivery</option>
-            <option value="ONLINE">Online Payment</option>
-          </select>
-
-          <button className="place-order-btn" onClick={handlePlaceOrder}>
-            Place Order
-          </button>
-        </div>
-
-        {/* Order Summary */}
+        {/* ------------------ LEFT: ORDER SUMMARY ------------------ */}
         <div className="checkout-summary">
           <h2>Order Summary</h2>
 
           {cartItems.map((item) => (
             <div className="summary-item" key={item._id}>
+              <img src={item.image} alt="" />
               <p>
                 {item.title} × {item.quantity}
               </p>
@@ -154,7 +94,36 @@ const Checkout = () => {
           <hr />
 
           <h3>Total: ₹{totalAmount}</h3>
-          
+        </div>
+
+        {/* ------------------ RIGHT: SHIPPING FORM ------------------ */}
+        <div className="checkout-form">
+          <h2>Shipping Details</h2>
+
+          <input type="text" name="fullname" placeholder="Full Name *" onChange={handleChange} />
+
+          <input type="email" name="email" placeholder="Email" onChange={handleChange} />
+
+          <input type="text" name="phone" placeholder="Phone Number" onChange={handleChange} />
+
+          <textarea name="address" placeholder="Address *" onChange={handleChange} />
+
+          <div className="inline-fields">
+            <input type="text" name="city" placeholder="City" onChange={handleChange} />
+            <input type="text" name="state" placeholder="State" onChange={handleChange} />
+          </div>
+
+          <input type="text" name="zip" placeholder="ZIP Code" onChange={handleChange} />
+
+          <h3>Payment Method</h3>
+          <select name="paymentMethod" onChange={handleChange} value={formData.paymentMethod}>
+            <option value="COD">Cash on Delivery</option>
+            <option value="ONLINE">Online Payment</option>
+          </select>
+
+          <button className="place-order-btn" onClick={handlePlaceOrder} disabled={loading}>
+            {loading ? "Placing Order..." : "Place Order"}
+          </button>
         </div>
       </div>
     </div>

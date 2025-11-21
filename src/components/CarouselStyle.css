@@ -56,8 +56,8 @@ margin: 10px 0;
 padding-right: 70px;
 
 }
-
-h1{
+ 
+ .components h1{
   background: linear-gradient(90deg,#0b536e,#ac2323);
   -webkit-background-clip: text;
   background-clip: text;
