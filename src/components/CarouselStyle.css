@@ -1,69 +1,142 @@
+/* ---------- TEXT ---------- */
+
 .first {
-  
   text-transform: uppercase;
-  background: linear-gradient(50deg,#ea0505,#ffea05);
+  background: linear-gradient(50deg, #ea0505, #ffea05);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-
+  letter-spacing: 2px;
 }
 
-.price {
-  color: grey;
-  font-size: 22px;
+.components h1 {
+  background: linear-gradient(90deg, #0b536e, #ac2323);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.product--image img{
-  width: 100%;
-  object-fit:cover;
-  height: 100%;
+
+.discrip {
+  max-width: 500px;
+  background: linear-gradient(90deg, #0b536e, #ac2323);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 10px 0;
+  padding-right: 70px;
 }
-@media screen and (max-width: 500px){
-  .product--image img{
-    width: 100%;
-    height: 75vh;
-  }
-}
+
+/* ---------- LAYOUT ---------- */
 
 .cards {
+  position: relative;
   margin-top: 90px;
-  
+  overflow: hidden;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .cards {
     margin-top: 70px;
   }
 }
+
 .components {
   position: absolute;
   margin: 200px 170px;
+  z-index: 2;
 }
+
 @media (max-width: 768px) {
   .components {
-    margin: 150px 50px;
+    margin: 150px 40px;
   }
 }
 
+/* ---------- IMAGE (ZOOMED & BIG) ---------- */
 
-
-.discrip {
-  max-width: 500px;
-  background: linear-gradient(90deg,#0b536e,#ac2323);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-margin: 10px 0;
-padding-right: 70px;
-
+.product--image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
- 
- .components h1{
-  background: linear-gradient(90deg,#0b536e,#ac2323);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 
+.product--image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.25); /* 🔥 BIG IMAGE */
+  transition: transform 1s ease;
 }
+
+@media (max-width: 768px) {
+  .product--image img {
+    height: 75vh;
+    transform: scale(1.1);
+  }
+}
+
+/* ---------- SOCIAL ICONS ---------- */
+
+.social-icons {
+  position: absolute;
+  bottom: 40px;
+  left: 60px;
+  display: flex;
+  gap: 18px;
+  z-index: 3;
+}
+
+.social-icons a {
+  color: #111;
+  font-size: 14px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: rgb(159, 86, 2);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  .social-icons {
+    left: 30px;
+    bottom: 25px;
+  }
+}
+
+/* ---------- LINK ---------- */
+
+.cards a {
+  display: inline-block;
+  color: #111;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 3px 0;
+  position: relative;
+}
+
+.cards a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: #111;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: 0.3s ease;
+}
+
+.cards a:hover::after {
+  transform: scaleX(1);
+  background: rgb(159, 86, 2);
+}
+
+/* ---------- ANIMATIONS ---------- */
+
 @keyframes slideIn {
   from {
     transform: translateX(-100%);
@@ -75,38 +148,23 @@ padding-right: 70px;
   }
 }
 
-.components.slide-in {
-  animation: slideIn 0.9s ease forwards;
+@keyframes zoomIn {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.25);
+  }
 }
+
 .cards.slide-in {
   animation: slideIn 0.9s ease forwards;
 }
-.cards a {
-  display: inline-block;
-  color: #111111;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  padding: 3px 0;
-  position: relative;  
-  overflow: hidden;  
+
+.components.slide-in {
+  animation: slideIn 0.9s ease forwards;
 }
 
-.cards a::after {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 2px;
-  background: #111111; /* Default line color */
-  content: "";
-  transition: all 0.3s ease-in-out;
-  transform: scaleX(0); 
-  transform-origin: left;
-}
-
-.cards a:hover::after {
-  transform: scaleX(1);
-  background: rgb(159, 86, 2); /* Change to your desired color */
+.cards.slide-in .product--image img {
+  animation: zoomIn 1.3s ease forwards;
 }

@@ -1,152 +1,152 @@
 .footer {
-    background-color: #0d0d0d;
-    color: #fff;
-    padding: 50px  20px 20px 50px  ;
-    font-family: "Poppins", sans-serif;
-  }
-  
-  .footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 30px;
-    max-width: 1200px;
-    margin: auto;
-  }
-  
-  .footer-section {
-    flex: 1;
-    min-width: 250px;
-  }
-  
-  .logo {
-    font-size: 26px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  .logo span {
-    color: red;
-  }
-  
-  .description {
-    font-size: 14px;
-    margin: 12px 0;
-    color: #ccc;
-  }
-  
-  .payment-icons img {
-    width: 180px;
-    margin-top: 10px;
-    filter: brightness(0.8);
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .payment-icons img:hover {
-    transform: scale(1.05);
-  }
-  
- .footer-section h3 {
-    font-size: 18px;
-    margin-bottom: 12px;
-    color: #f2f2f2;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  ul li {
-    margin-bottom: 10px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    color: #bbb;
-  }
-  
-  ul li:hover {
-    color: red;
-    /* transform: translateX(5px); */
-  }
-  
-  .newsletter p {
-    font-size: 14px;
-    color: #ccc;
-  }
-  
-  .newsletter-input {
-    display: flex;
+  background-color: #0d0d0d;
+  color: #fff;
+  padding: 50px 20px;
+  font-family: "Poppins", sans-serif;
+}
 
-    border-radius: 30px;
-    overflow: hidden;
-  
-  }
-  
-  .newsletter-input input {
-    flex: 1;
-    padding: 10px 15px;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: #fff;
-  }
-  
-  .newsletter-input input::placeholder {
-    color: #ddd;
-  }
-  
-  .newsletter-input button {
-    background: red;
-    border: none;
-    color: white;
-    padding: 10px 18px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 30px;
-    transition: background 0.3s ease-in-out;
-  }
-  
-  .newsletter-input button:hover {
-    background: #ff4444;
-  }
-  
-  .footer-bottom {
+/* Container */
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Section */
+.footer-section {
+  flex: 1;
+  min-width: 240px;
+}
+
+/* Logo */
+.footer-logo {
+  max-width: 150px;
+  margin-bottom: 12px;
+}
+
+/* Text */
+.description {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+/* Payment */
+.payment-icons img {
+  width: 180px;
+  filter: brightness(0.85);
+  transition: transform 0.3s ease;
+}
+
+.payment-icons img:hover {
+  transform: scale(1.05);
+}
+
+/* Headings */
+.footer-section h3 {
+  font-size: 18px;
+  margin-bottom: 14px;
+  color: #f2f2f2;
+}
+
+/* Lists */
+.footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer ul li {
+  margin-bottom: 10px;
+}
+
+.footer ul li a {
+  font-size: 15px;
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer ul li a:hover {
+  color: red;
+}
+
+/* Newsletter */
+.newsletter p {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 12px;
+}
+
+.newsletter-input {
+  display: flex;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 1px solid #333;
+  background: #111;
+}
+
+.newsletter-input input {
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+}
+
+.newsletter-input input::placeholder {
+  color: #aaa;
+}
+
+.newsletter-input button {
+  background: red;
+  border: none;
+  padding: 0 22px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.newsletter-input button:hover {
+  background: #ff4444;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #222;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.footer-bottom a {
+  color: red;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-bottom a:hover {
+  color: #ff4444;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
     text-align: center;
-    padding: 20px 0;
-    font-size: 14px;
-    border-top: 1px solid #222;
-    margin-top: 20px;
-    color: #ccc;
   }
-  
-  .footer-bottom a {
-    color: red;
-    text-decoration: none;
-    transition: color 0.3s ease-in-out;
+
+  .newsletter-input {
+    justify-content: center;
   }
-  
-  .footer-bottom a:hover {
-    color: #ff4444;
+
+  .newsletter-input input {
+    text-align: center;
   }
-  
-  /* Mobile Responsive */
-  @media (max-width: 768px) {
-    .footer-container {
-      flex-direction: column;
-      text-align: center;
-    }
-  
-    .footer-section {
-      margin-bottom: 20px;
-    }
-  
-    .newsletter-input {
-      justify-content: center;
-    }
-  
-    .newsletter-input input {
-      text-align: center;
-    }
-  }
-  
+}

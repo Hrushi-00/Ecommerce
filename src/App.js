@@ -20,6 +20,7 @@ import ProductList from "./components/ProductList";
 import Checkout from "./components/Checkout";
 import OrderHistory from "./components/OrderHistory";
 import OrderDetails from "./components/OrderDetails";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 
 const App = () => {
