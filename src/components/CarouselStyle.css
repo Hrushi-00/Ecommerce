@@ -1,4 +1,4 @@
-/* ---------- TEXT ---------- */
+/* ================= TEXT ================= */
 
 .first {
   text-transform: uppercase;
@@ -7,6 +7,11 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 2px;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
 }
 
 .components h1 {
@@ -26,15 +31,22 @@
   padding-right: 70px;
 }
 
-/* ---------- LAYOUT ---------- */
+/* ================= LAYOUT ================= */
 
 .cards {
   position: relative;
   margin-top: 90px;
   overflow: hidden;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+    
+}
+.cards,
+.product--image img,
+.components {
+  will-change: transform;
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .cards {
     margin-top: 70px;
   }
@@ -48,11 +60,11 @@
 
 @media (max-width: 768px) {
   .components {
-    margin: 150px 40px;
+    margin: 150px 50px;
   }
 }
 
-/* ---------- IMAGE (ZOOMED & BIG) ---------- */
+/* ================= IMAGE ================= */
 
 .product--image {
   width: 100%;
@@ -64,18 +76,21 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.25); /* 🔥 BIG IMAGE */
+  transform: scale(1.25);       /* 🔥 desktop zoom */
   transition: transform 1s ease;
 }
 
-@media (max-width: 768px) {
+/* 🔥 MOBILE IMAGE FIX (NO CROP, NO ZOOM) */
+@media screen and (max-width: 768px) {
   .product--image img {
-    height: 75vh;
-    transform: scale(1.1);
+    height: 70vh;
+    transform: scale(1);        /* ❌ remove zoom */
+    object-fit: cover;
+    object-position: center top; /* ✅ face visible */
   }
 }
 
-/* ---------- SOCIAL ICONS ---------- */
+/* ================= SOCIAL ICONS ================= */
 
 .social-icons {
   position: absolute;
@@ -104,7 +119,7 @@
   }
 }
 
-/* ---------- LINK ---------- */
+/* ================= LINK ================= */
 
 .cards a {
   display: inline-block;
@@ -135,7 +150,7 @@
   background: rgb(159, 86, 2);
 }
 
-/* ---------- ANIMATIONS ---------- */
+/* ================= ANIMATIONS ================= */
 
 @keyframes slideIn {
   from {

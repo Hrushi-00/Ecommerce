@@ -14,10 +14,10 @@ const Carousel2 = (props) => {
       
       {/* Social Icons */}
       <div className="social-icons">
-        <a href="#"><i className="fab fa-facebook-f"></i></a>
-        <a href="#"><i className="fab fa-twitter"></i></a>
-        <a href="#"><i className="fab fa-pinterest-p"></i></a>
-        <a href="#"><i className="fab fa-instagram"></i></a>
+        <a href="/"><i className="fab fa-facebook-f"></i></a>
+        <a href="/"><i className="fab fa-twitter"></i></a>
+        <a href="/"><i className="fab fa-pinterest-p"></i></a>
+        <a href="/"><i className="fab fa-instagram"></i></a>
       </div>
 
       <div className={`components ${animate ? 'slide-in' : ''}`}>
