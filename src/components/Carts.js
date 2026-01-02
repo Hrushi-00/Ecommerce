@@ -22,6 +22,8 @@ const Carts = () => {
   const [loading, setLoading] = useState(true); // ✅ added only
   const [activeTab, setActiveTab] = useState("best");
   const [favorites, setFavorites] = useState([]);
+  const [animationKey, setAnimationKey] = useState(0);
+
 
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
@@ -73,17 +75,31 @@ const Carts = () => {
   }, [token]);
 
   // Tabs
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    let sorted = [...products];
+const handleTabChange = (tab) => {
+  if (tab === activeTab) return;
 
-    if (tab === "best") sorted.sort((a, b) => b.rating - a.rating);
-    else if (tab === "new")
-      sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    else if (tab === "hot") sorted.sort((a, b) => b.price - a.price);
+  setActiveTab(tab);
 
-    setFiltered(sorted);
-  };
+  let sorted = [...products];
+
+  if (tab === "best") {
+    sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  } 
+  else if (tab === "new") {
+    sorted.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+  } 
+  else if (tab === "hot") {
+    sorted.sort((a, b) => b.price - a.price);
+  }
+
+  setFiltered(sorted);
+
+  // 🔥 FORCE REMOUNT
+  setAnimationKey(prev => prev + 1);
+};
+
 
   // Favorites
   const handleAddFavorite = async (productId) => {
@@ -207,7 +223,7 @@ const Carts = () => {
         </span>
       </div>
 
-      <div className="main-project-container">
+      <div key={animationKey} className="main-project-container">
         {loading
           ? Array.from({ length: 8 }).map((_, i) => (
               <ProductSkeleton key={i} />

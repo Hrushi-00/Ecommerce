@@ -5,23 +5,43 @@ import { useNavigate } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+/* SVG Arrow Icon */
+const ArrowIcon = ({ direction = "right" }) => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    style={{ transform: direction === "left" ? "rotate(180deg)" : "none" }}
+  >
+    <path d="M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <path
+      d="M13 6L19 12L13 18"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 const AutoScrollProducts = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // ✅ added
+  const [loading, setLoading] = useState(true);
   const scrollRef = useRef(null);
   const navigate = useNavigate();
 
-  // Fetch products
+  /* Fetch products */
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `${API_URL}/api/products/products?page=1&limit=6`
+          `${API_URL}/api/products/products?page=1&limit=20`
         );
         setProducts(res.data);
-      } catch (error) {
-        console.log("Error fetching products:", error);
+      } catch (err) {
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -29,89 +49,99 @@ const AutoScrollProducts = () => {
     fetchProducts();
   }, []);
 
-  // Auto-scroll effect (UNCHANGED)
+  /* Wheel scroll (desktop) */
   useEffect(() => {
-    if (loading) return;
+    const el = scrollRef.current;
+    if (!el || !window.matchMedia("(pointer: fine)").matches) return;
 
-    const scrollContainer = scrollRef.current;
+    const onWheel = (e) => {
+      e.preventDefault();
+      el.scrollLeft += e.deltaY;
+    };
 
-    const scrollInterval = setInterval(() => {
-      if (scrollContainer) {
-        scrollContainer.scrollLeft += 2;
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
 
-        if (
-          scrollContainer.scrollLeft + scrollContainer.clientWidth >=
-          scrollContainer.scrollWidth
-        ) {
-          scrollContainer.scrollLeft = 0;
-        }
-      }
-    }, 20);
+  /* Drag scroll */
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
 
-    return () => clearInterval(scrollInterval);
-  }, [products, loading]);
-  
-  // Navigate to product details
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    const mouseDown = (e) => {
+      isDown = true;
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+    };
+
+    const mouseUp = () => (isDown = false);
+    const mouseLeave = () => (isDown = false);
+
+    const mouseMove = (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      el.scrollLeft = scrollLeft - (x - startX) * 1.3;
+    };
+
+    el.addEventListener("mousedown", mouseDown);
+    el.addEventListener("mouseup", mouseUp);
+    el.addEventListener("mouseleave", mouseLeave);
+    el.addEventListener("mousemove", mouseMove);
+
+    return () => {
+      el.removeEventListener("mousedown", mouseDown);
+      el.removeEventListener("mouseup", mouseUp);
+      el.removeEventListener("mouseleave", mouseLeave);
+      el.removeEventListener("mousemove", mouseMove);
+    };
+  }, []);
+
+  const scrollByAmount = (amount) => {
+    scrollRef.current?.scrollBy({ left: amount, behavior: "smooth" });
+  };
+
   const handleCardClick = (product) => {
     navigate(`/product/${product._id}`, { state: { product } });
   };
 
-  // ✅ Skeleton Card (same layout)
-  const SkeletonCard = () => (
-    <div className="auto-card">
-      <div className="auto-skeleton-img"></div>
-      <div className="auto-skeleton-title"></div>
-      <div className="auto-skeleton-text"></div>
-      <div className="auto-skeleton-text small"></div>
-    </div>
-  );
-
   return (
     <div className="auto-scroll-main">
+      {/* LEFT ARROW */}
+      <button className="scroll-arrow left" onClick={() => scrollByAmount(-320)}>
+        <ArrowIcon direction="left" />
+      </button>
+
       <div className="auto-scroll-box" ref={scrollRef}>
-        {loading ? (
-          Array.from({ length: 6 }).map((_, i) => (
-            <SkeletonCard key={i} />
-          ))
-        ) : (
-          <>
-            {products.map((product) => (
+        {loading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <div className="auto-card skeleton" key={i} />
+            ))
+          : products.map((product) => (
               <div
                 className="auto-card"
                 key={product._id}
                 onClick={() => handleCardClick(product)}
               >
                 <img
-                  src={product.image || "https://via.placeholder.com/200"}
+                  src={product.image || "https://via.placeholder.com/300"}
                   alt={product.title}
-                  loading="lazy"
                 />
                 <h4>{product.title}</h4>
                 <p>₹{product.price}</p>
-                <p>⭐ {product.rating}</p>
+                <span>⭐ {product.rating}</span>
               </div>
             ))}
-
-            {/* Duplicate list for infinite loop */}
-            {products.map((product) => (
-              <div
-                className="auto-card"
-                key={product._id + "_dup"}
-                onClick={() => handleCardClick(product)}
-              >
-                <img
-                  src={product.image || "https://via.placeholder.com/200"}
-                  alt={product.title}
-                  loading="lazy"
-                />
-                <h4>{product.title}</h4>
-                <p>₹{product.price}</p>
-                <p>⭐ {product.rating}</p>
-              </div>
-            ))}
-          </>
-        )}
       </div>
+
+      {/* RIGHT ARROW */}
+      <button className="scroll-arrow right" onClick={() => scrollByAmount(320)}>
+        <ArrowIcon />
+      </button>
     </div>
   );
 };
