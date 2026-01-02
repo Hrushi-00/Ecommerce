@@ -1,20 +1,23 @@
 /* ======= Container ======= */
 .work-container {
   max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 15px;
+  /* margin: 70px auto; */
+  padding: 0px 15px;
+  position: relative;
+  overflow: hidden;
 }
 
 /* ======= Heading ======= */
 .project-heading {
   text-align: center;
+  /* margin-top: 80px; */
   background: linear-gradient(90deg, #ac2323, #0b536e);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+/* position: relative; */
   font-size: 2.2rem;
   font-weight: 700;
-  margin-top: 40px;
   letter-spacing: 1px;
   transition: all 0.3s ease;
 }
@@ -124,7 +127,7 @@
   margin-top: 10px;
 }
 
-.btn1 {
+.btn1s {
   display: inline-block;
   padding: 8px 18px;
   border: 2px solid #111827;
@@ -136,9 +139,14 @@
   transition: all 0.3s ease;
 }
 
-.btn1:hover {
+.btn1s:hover {
   background-color: #111827;
   color: #fff;
+}
+@media screen {
+  .btn1s{
+     padding: 8px 15px;
+  }
 }
 
 /* ======= Favorite Icon ======= */

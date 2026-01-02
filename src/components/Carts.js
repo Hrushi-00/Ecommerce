@@ -13,6 +13,8 @@ import {
 } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// import { Navbar } from "react-bootstrap";
+import Navbar from "./Navbar";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -199,7 +201,11 @@ const handleTabChange = (tab) => {
   );
 
   return (
+  <>
+  
+    
     <div className="work-container">
+      
       <h1 className="project-heading">Products</h1>
 
       <div className="product-tabs">
@@ -262,7 +268,7 @@ const handleTabChange = (tab) => {
 
                     <div className="pro-btns">
                       <button
-                        className="btn1"
+                        className="btn1s"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleAddToCart(product);
@@ -279,6 +285,7 @@ const handleTabChange = (tab) => {
 
       <ToastContainer />
     </div>
+  </>
   );
 };
 
