@@ -52,7 +52,7 @@ const ProfilePage = () => {
 
   // Fetch Orders
   useEffect(() => {
-    if (activeTab !== "orders") return;
+    if (!token || activeTab !== "orders") return;
 
     const fetchOrders = async () => {
       try {
@@ -66,7 +66,7 @@ const ProfilePage = () => {
     };
 
     fetchOrders();
-  }, [activeTab]);
+  }, [activeTab, token]);
 
   // Update Profile
   const handleProfileUpdate = async (e) => {

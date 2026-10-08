@@ -13,8 +13,6 @@ import {
 } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { Navbar } from "react-bootstrap";
-import Navbar from "./Navbar";
 
 const API_URL = process.env.REACT_APP_API_URL;
 

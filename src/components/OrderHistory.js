@@ -11,6 +11,8 @@ const OrderHistory = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    if (!token) return;
+
     const fetchOrders = async () => {
       try {
         const res = await axios.get(`${API_URL}/api/orders/myorders`, {
@@ -23,7 +25,7 @@ const OrderHistory = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [token]);
 
   return (
     <div className="order-history-container">
