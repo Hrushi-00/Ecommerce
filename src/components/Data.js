@@ -1,3 +1,6 @@
+import hero2 from "../assets/hero/hero-2.jpg";
+import hero1 from "../assets/hero/hero-1.jpg";
+
 export const responsive = {
     superLargeDesktop: {
 
@@ -17,14 +20,14 @@ export const responsive = {
   export const productData =[
     {
         id:1,
-        image:"https://themewagon.github.io/malefashion/img/hero/hero-2.jpg",
+        image: hero2,
     
         description:"A specialist label creating luxury essentials. Ethically crafted  with an unwavering commitment to exceptional quality.",
         name:"Fall - Winter Collections 2025"
     },
     {
         id:2,
-        image:"https://themewagon.github.io/malefashion/img/hero/hero-1.jpg",
+        image: hero1,
      
         description:"A specialist label creating luxury essentials. Ethically  crafted with an unwavering commitment to exceptional quality.",
         name:"Fall - Winter Collections 2025"
