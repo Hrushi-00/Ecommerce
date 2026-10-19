@@ -1,8 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import 'lenis/dist/lenis.css';
+import Lenis from 'lenis';
 import App from './App';
 import{ BrowserRouter }from "react-router-dom"
+
+const lenis = new Lenis({
+  lerp: 0.1,
+  smoothWheel: true,
+});
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+
+requestAnimationFrame(raf);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
